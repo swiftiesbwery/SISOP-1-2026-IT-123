@@ -98,3 +98,104 @@ Jika user memasukkan pilihan selain a/b/c/d/e, maka program akan menampilkan pes
 <img width="698" height="93" alt="image" src="https://github.com/user-attachments/assets/374aeb0f-3b62-4d43-8f0e-aa8dc3a968d5" />
 
 Hal ini menunjukkan bahwa program memiliki validasi input sederhana.
+
+# **Soal 2**
+
+## **Penjelasan**
+
+Pada soal ini, dilakukan simulasi ekspedisi pencarian lokasi pusaka berdasarkan data koordinat. Data diperoleh dari file JSON (gsxtrack.json) yang berisi beberapa titik lokasi hasil ekspedisi sebelumnya.
+
+Berdasarkan petunjuk, lokasi pusaka berada di titik tengah dari semua titik koordinat, yang secara visual membentuk sebuah persegi. Oleh karena itu, pendekatan yang digunakan adalah mencari titik tengah diagonal dari dua titik yang saling berseberangan.
+
+Untuk menyelesaikan permasalahan ini, dibuat dua script:
+
+- parserkoordinat.sh → untuk mengekstrak data dari JSON
+- nemupusaka.sh → untuk menghitung titik pusat
+
+## **Implementasi Program**
+
+### **1. Ekstraksi Data Koordinat (parserkoordinat.sh)**
+
+Script ini bertujuan untuk mengambil data penting dari file gsxtrack.json, yaitu:
+
+- id
+- site_name
+- latitude
+- longitude
+
+Data diambil menggunakan tools seperti:
+
+- grep
+- sed
+- awk
+
+Kemudian disusun dalam format:
+
+<img width="442" height="49" alt="image" src="https://github.com/user-attachments/assets/21da3b38-6394-47eb-9e41-93d3717a3a48" />
+
+Dan disimpan ke file:
+
+<img width="262" height="32" alt="image" src="https://github.com/user-attachments/assets/646d635b-ead8-40a5-b6bd-5452cea08002" />
+
+### **2. Perhitungan Titik Pusat (nemupusaka.sh)**
+
+Script ini digunakan untuk mencari lokasi pusaka berdasarkan titik tengah diagonal.
+
+**Analisis Kode**
+
+**Mengambil Koordinat Titik Pertama**
+
+<img width="766" height="84" alt="image" src="https://github.com/user-attachments/assets/f666a876-5542-4d01-85f4-e69fb0c8f2d7" />
+
+Penjelasan:
+
+- sed -n '1p' → mengambil baris ke-1
+- awk -F',' → memisahkan berdasarkan koma
+- $3 → latitude
+- $4 → longitude
+
+**Mengambil Koordinat Titik Ketiga (Diagonal)**
+
+<img width="752" height="82" alt="image" src="https://github.com/user-attachments/assets/709026e5-8f90-4228-a0b4-408ff6518c54" />
+
+Penjelasan:
+
+- Mengambil baris ke-3 sebagai titik diagonal
+- Diasumsikan titik 1 dan 3 saling berseberangan
+
+**Menghitung Titik Tengah**
+
+<img width="686" height="94" alt="image" src="https://github.com/user-attachments/assets/c1413657-0236-4a86-9ec0-1498b7653145" />
+
+Penjelasan:
+
+- Menggunakan rumus titik tengah:
+
+<img width="931" height="204" alt="image" src="https://github.com/user-attachments/assets/576e939f-e9c2-4852-946e-23d3ac08a093" />
+
+- printf "%.5f" → membatasi 5 angka di belakang koma
+
+hasilnya adalah titik koordinat pusat.
+
+**Menyimpan Hasil**
+
+<img width="427" height="59" alt="image" src="https://github.com/user-attachments/assets/33a2733f-371e-4548-bbf8-fc47cf645206" />
+
+- Menyimpan hasil koordinat ke file
+- Format: latitude,longitude
+
+**Menampilkan Output**
+
+<img width="345" height="117" alt="image" src="https://github.com/user-attachments/assets/da6e456b-ccf4-4c72-92e8-2c8e4c8d1474" />
+
+menampilkan hasil ke terminal agar user dapat melihat langsung
+Hasil Program
+
+Program menghasilkan:
+
+- File titik-penting.txt → berisi data koordinat
+- File posisipusaka.txt → berisi titik pusat
+
+Output :
+
+<img width="327" height="91" alt="image" src="https://github.com/user-attachments/assets/42b393a4-f7a4-4c1b-be19-fd5ef7807c42" />
